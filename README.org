@@ -1,0 +1,80 @@
+#+TITLE:DCC: D's Cruft Collection
+
+This is where I dump opinionated snippets from my Emacs configuration
+and related hacks, together with some of the thinking processes behind
+them.
+
+** Elisp Conventions
+I generally prefix all of my functions and variables with the prefix
+~my-~.  That's about it.
+
+* Greek Character Input with =C-x 8 g=
+I must say, one of the things I have come to truly appreciate is the
+concept of a compose key.  You have a rare character you wanna type,
+you smash two vaguely related characters together, and the result is
+what you wanted.  Take ç (also known as =LATIN SMALL LETTER C CEDILLA=)
+for example.  =Compose= + =,= + =c= = =ç=.  Brilliant.  Emacs has something
+similar, the =C-x 8= prefix.  It either takes multiple characters and
+mashes them together, like =C-x 8 " A= = =Ä=, or takes a single character
+as if to say "give me that one but weird" (see =C-x 8 P= = =¶=).  Another
+thing both features have in common is that they both have a lot of
+untapped potential.  All that room for cryptic mnemonics that possibly
+make only sense to you!  So, how does =C-x 8= work?  It does not have a
+map like =C-x 4='s ~ctl-x-4-map~, and its entries are listed as "Key
+translations", not "Global Bindings".  Well, it's in a special map,
+~key-translation-map~.  Adding bindings to this map which are just
+single-char strings also has the advantage of them showing up /as the
+actual characters/ in help menus such as that of ~describe-bindings~,
+instead of just unhelpfully reading =Keyboard Macro=.
+
+#+begin_src elisp
+  (defvar my-greek-prefix "C-x 8 g"
+    "Keyboard prefix used for greek letters, as a string.")
+
+  (defvar my-greek-alist nil
+    "Alist of keys to be translated into greek characters.
+  Each entry should take the form
+  \(KEY . VALUE)
+
+  where KEY and VALUE are chars.
+
+  KEY should correspond to a letter key which (prefixed by
+  ‘my-greek-prefix’) translates into the corresponding VALUE.")
+
+  (setq-default my-greek-alist
+                '((?a . ?α)
+                  (?b . ?β)
+                  (?g . ?γ)
+                  (?d . ?δ)
+                  (?e . ?ε)
+                  (?z . ?ζ)
+                  (?h . ?η)
+                  (?q . ?θ)
+                  (?i . ?ι)
+                  (?k . ?κ)
+                  (?l . ?λ)
+                  (?m . ?μ)
+                  (?n . ?ν)
+                  (?x . ?ξ)
+                  (?p . ?π)
+                  (?r . ?ρ)
+                  (?s . ?σ)
+                  (?t . ?τ)
+                  (?u . ?υ)
+                  (?f . ?ϕ)
+                  (?j . ?φ)
+                  (?c . ?χ)
+                  (?y . ?ψ)
+                  (?w . ?ω)
+                  (?W . ?Ω)
+                  (?G . ?Γ)
+                  (?D . ?Δ)))
+
+  (dolist (entry my-greek-alist)
+    (define-key key-translation-map
+      (kbd (format "%s %c" my-greek-prefix (car entry)))
+      (char-to-string (cdr entry))))
+
+#+end_src
+
+#  LocalWords:  Elisp ç
