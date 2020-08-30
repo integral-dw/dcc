@@ -31,6 +31,7 @@ unhelpfully reading =Keyboard Macro=.  Now to the actual code: I decided
 to use the prefix =C-x 8 g= + whatever +letter makes sense in my head+
 AUCTeX picked.  To be fair, I find most of the AUCTeX bindings
 intuitive, which is why I decided to go for them after doing some
+=.emacs= housekeeping.
 #+begin_src elisp
   (defvar my-greek-prefix "C-x 8 g"
     "Keyboard prefix used for greek letters, as a string.")
