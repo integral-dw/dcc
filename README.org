@@ -19,14 +19,18 @@ mashes them together, like =C-x 8 " A= = =Ä=, or takes a single character
 as if to say "give me that one but weird" (see =C-x 8 P= = =¶=).  Another
 thing both features have in common is that they both have a lot of
 untapped potential.  All that room for cryptic mnemonics that possibly
-make only sense to you!  So, how does =C-x 8= work?  It does not have a
-map like =C-x 4='s ~ctl-x-4-map~, and its entries are listed as "Key
-translations", not "Global Bindings".  Well, it's in a special map,
-~key-translation-map~.  Adding bindings to this map which are just
-single-char strings also has the advantage of them showing up /as the
-actual characters/ in help menus such as that of ~describe-bindings~,
-instead of just unhelpfully reading =Keyboard Macro=.
+make only sense to you!
 
+So, how does =C-x 8= work?  It does not have a map like =C-x 4='s
+~ctl-x-4-map~, and its entries are listed as "Key translations", not
+"Global Bindings".  Well, it's in a special map, ~key-translation-map~.
+Adding bindings to this map which are just single-char keyboard macros
+also has the advantage of them showing up /as the actual characters/ in
+help menus such as that of ~describe-bindings~, instead of just
+unhelpfully reading =Keyboard Macro=.  Now to the actual code: I decided
+to use the prefix =C-x 8 g= + whatever +letter makes sense in my head+
+AUCTeX picked.  To be fair, I find most of the AUCTeX bindings
+intuitive, which is why I decided to go for them after doing some
 #+begin_src elisp
   (defvar my-greek-prefix "C-x 8 g"
     "Keyboard prefix used for greek letters, as a string.")
@@ -36,45 +40,52 @@ instead of just unhelpfully reading =Keyboard Macro=.
   Each entry should take the form
   \(KEY . VALUE)
 
-  where KEY and VALUE are chars.
+  where KEY is a string and VALUE a char.
 
-  KEY should correspond to a letter key which (prefixed by
+  KEY should correspond to a string of keys which (prefixed by
   ‘my-greek-prefix’) translates into the corresponding VALUE.")
 
-  (setq-default my-greek-alist
-                '((?a . ?α)
-                  (?b . ?β)
-                  (?g . ?γ)
-                  (?d . ?δ)
-                  (?e . ?ε)
-                  (?z . ?ζ)
-                  (?h . ?η)
-                  (?q . ?θ)
-                  (?i . ?ι)
-                  (?k . ?κ)
-                  (?l . ?λ)
-                  (?m . ?μ)
-                  (?n . ?ν)
-                  (?x . ?ξ)
-                  (?p . ?π)
-                  (?r . ?ρ)
-                  (?s . ?σ)
-                  (?t . ?τ)
-                  (?u . ?υ)
-                  (?f . ?ϕ)
-                  (?j . ?φ)
-                  (?c . ?χ)
-                  (?y . ?ψ)
-                  (?w . ?ω)
-                  (?W . ?Ω)
-                  (?G . ?Γ)
-                  (?D . ?Δ)))
+  (setq-default my-greek-alist ;; Rip off AUCTeX.
+                '(("a" . ?α)
+                  ("b" . ?β)
+                  ("c" . ?χ) ;; This one is now free!
+                  ("d" . ?δ)
+                  ("D" . ?Δ)
+                  ("e" . ?ε)
+                  ("f" . ?ϕ)
+                  ("v f" . ?φ)
+                  ("F" . ?Φ)
+                  ("g" . ?γ)
+                  ("G" . ?Γ)
+                  ("h" . ?η)
+                  ("i" . ?ι) ;; Makes the most sense here.
+                  ("j" . ?θ)
+                  ("J" . ?Θ)
+                  ("k" . ?κ)
+                  ("l" . ?λ)
+                  ("L" . ?Λ)
+                  ("m" . ?μ)
+                  ("n" . ?ν)
+                  ("p" . ?π)
+                  ("P" . ?Π)
+                  ("q" . ?χ)
+                  ("r" . ?ρ)
+                  ("s" . ?σ)
+                  ("S" . ?Σ)
+                  ("t" . ?τ)
+                  ("u" . ?υ)
+                  ("y" . ?ψ)
+                  ("Y" . ?Ψ)
+                  ("x" . ?ξ)
+                  ("X" . ?Ξ)
+                  ("w" . ?ω)
+                  ("W" . ?Ω)
+                  ("z" . ?ζ)))
 
   (dolist (entry my-greek-alist)
     (define-key key-translation-map
-      (kbd (format "%s %c" my-greek-prefix (car entry)))
+      (kbd (format "%s %s" my-greek-prefix (car entry)))
       (char-to-string (cdr entry))))
-
 #+end_src
 
-#  LocalWords:  Elisp ç
+#  LocalWords:  Elisp ç AUCTeX
