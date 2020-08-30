@@ -13,7 +13,7 @@ I must say, one of the things I have come to truly appreciate is the
 concept of a compose key.  You have a rare character you wanna type,
 you smash two vaguely related characters together, and the result is
 what you wanted.  Take ç (also known as =LATIN SMALL LETTER C CEDILLA=)
-for example.  =Compose= + =,= + =c= = =ç=.  Brilliant.  Emacs has something
+for example.  =Compose + , + c= = =ç=.  Brilliant.  Emacs has something
 similar, the =C-x 8= prefix.  It either takes multiple characters and
 mashes them together, like =C-x 8 " A= = =Ä=, or takes a single character
 as if to say "give me that one but weird" (see =C-x 8 P= = =¶=).  Another
